@@ -13,7 +13,11 @@ fs.readdir(currentFolder, { withFileTypes: true }, (err, files) => {
           if (err) throw err;
 
           let infoFile = path.parse(pathToFile);
-          console.log(`${infoFile.name} - ${infoFile.ext.replace('.', '')} - ${stats.size}`);
+          console.log(
+            `${infoFile.name} - ${infoFile.ext.replace('.', '')} - ${
+              stats.size
+            }`,
+          );
         });
       }
     });
