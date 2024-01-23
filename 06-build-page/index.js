@@ -15,31 +15,34 @@ function createFolderProjectDist() {
 createFolderProjectDist();
 
 // Add assets folder into project dist
-fs.mkdir(
-  path.join(__dirname, 'project-dist', 'assets'),
-  { recursive: true },
-  (err) => {
-    if (err) {
-      return console.error(err);
+function addAssets() {
+  fs.mkdir(
+    path.join(__dirname, 'project-dist', 'assets'),
+    { recursive: true },
+    (err) => {
+      if (err) {
+        return console.error(err);
+      }
+    },
+  );
+  
+  fs.readdir(assetsWay, (err, folders) => {
+    if (err) console.log(err);
+    else {
+      // console.log('\nCurrent directory filenames:');
+      folders.forEach((folder) => {
+        fs.mkdir(
+          path.join(__dirname, 'project-dist', 'assets', folder),
+          { recursive: true },
+          (err) => {
+            if (err) console.log(err);
+          },
+        );
+      });
     }
-  },
-);
-
-fs.readdir(assetsWay, (err, folders) => {
-  if (err) console.log(err);
-  else {
-    // console.log('\nCurrent directory filenames:');
-    folders.forEach((folder) => {
-      fs.mkdir(
-        path.join(__dirname, 'project-dist', 'assets', folder),
-        { recursive: true },
-        (err) => {
-          if (err) console.log(err);
-        },
-      );
-    });
-  }
-});
+  });
+}
+addAssets();
 
 function copyFileFromFolder() {
   console.log('\nCurrent filenames:');
@@ -123,27 +126,30 @@ templateHtml();
 const folderWithStyles = path.join(__dirname, 'styles');
 let projectDistStyle = path.join(__dirname, 'project-dist', 'style.css');
 
-fs.writeFile(projectDistStyle, '', (err) => {
-  if (err) throw err;
-});
-
-fs.readdir(folderWithStyles, { withFileTypes: true }, (err, files) => {
-  if (err) console.log(err);
-  else {
-    files.forEach((file) => {
-      if (file.isFile()) {
-        let pathToFile = path.join(folderWithStyles, file.name);
-        if (path.parse(pathToFile).ext === '.css') {
-          fs.readFile(pathToFile, 'utf8', function (err, data) {
-            if (err) console.log(err);
-            let bundelStyles = [];
-            bundelStyles.push(data);
-            fs.appendFile(projectDistStyle, data, (err) => {
-              if (err) throw err;
+function addStyles() {
+  fs.writeFile(projectDistStyle, '', (err) => {
+    if (err) throw err;
+  });
+  
+  fs.readdir(folderWithStyles, { withFileTypes: true }, (err, files) => {
+    if (err) console.log(err);
+    else {
+      files.forEach((file) => {
+        if (file.isFile()) {
+          let pathToFile = path.join(folderWithStyles, file.name);
+          if (path.parse(pathToFile).ext === '.css') {
+            fs.readFile(pathToFile, 'utf8', function (err, data) {
+              if (err) console.log(err);
+              let bundelStyles = [];
+              bundelStyles.push(data);
+              fs.appendFile(projectDistStyle, data, (err) => {
+                if (err) throw err;
+              });
             });
-          });
+          }
         }
-      }
-    });
-  }
-});
+      });
+    }
+  });
+}
+addStyles();
