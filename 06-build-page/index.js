@@ -103,7 +103,7 @@ function templateHtml() {
                   dataComponent,
                 );
                 fs.writeFile(
-                  `${projectDist}\\index.html`,
+                  path.join(`${projectDist}`, 'index.html'),
                   dataTemplate,
                   function (err) {
                     if (err) console.log(err);
@@ -118,3 +118,32 @@ function templateHtml() {
   );
 }
 templateHtml();
+
+// Add Styles
+const folderWithStyles = path.join(__dirname, 'styles');
+let projectDistStyle = path.join(__dirname, 'project-dist', 'style.css');
+
+fs.writeFile(projectDistStyle, '', (err) => {
+  if (err) throw err;
+});
+
+fs.readdir(folderWithStyles, { withFileTypes: true }, (err, files) => {
+  if (err) console.log(err);
+  else {
+    files.forEach((file) => {
+      if (file.isFile()) {
+        let pathToFile = path.join(folderWithStyles, file.name);
+        if (path.parse(pathToFile).ext === '.css') {
+          fs.readFile(pathToFile, 'utf8', function (err, data) {
+            if (err) console.log(err);
+            let bundelStyles = [];
+            bundelStyles.push(data);
+            fs.appendFile(projectDistStyle, data, (err) => {
+              if (err) throw err;
+            });
+          });
+        }
+      }
+    });
+  }
+});
