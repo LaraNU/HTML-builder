@@ -11,7 +11,6 @@ fs.mkdir(path.join(__dirname, 'files-copy'), { recursive: true }, (err) => {
 });
 
 function copyFileFromFolder() {
-  console.log('\nCurrent filenames:');
   fs.readdir(currFolder, { withFileTypes: true }, (err, files) => {
     if (err) console.log(err);
     else {
@@ -21,8 +20,6 @@ function copyFileFromFolder() {
         fs.copyFile(pathToFile, pathToFileCopy, (err) => {
           if (err) {
             console.log('Error Found:', err);
-          } else {
-            console.log(copyFolder);
           }
         });
       });
@@ -37,9 +34,6 @@ fs.readdir(copyFolder, { withFileTypes: true }, (err, files) => {
       let pathToFileCopy = path.join(copyFolder, file.name);
       fs.unlink(pathToFileCopy, (err) => {
         if (err) console.log(err);
-        else {
-          console.log('\nDeleted file:');
-        }
       });
     });
   }

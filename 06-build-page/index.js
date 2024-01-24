@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 const assetsWay = path.join(__dirname, 'assets');
 const projectDist = path.join(__dirname, 'project-dist');
-// console.log(assetsWay)
 
 // Creat folder project-dist
 function createFolderProjectDist() {
@@ -29,7 +28,6 @@ function addAssets() {
   fs.readdir(assetsWay, (err, folders) => {
     if (err) console.log(err);
     else {
-      // console.log('\nCurrent directory filenames:');
       folders.forEach((folder) => {
         fs.mkdir(
           path.join(__dirname, 'project-dist', 'assets', folder),
@@ -45,7 +43,6 @@ function addAssets() {
 addAssets();
 
 function copyFileFromFolder() {
-  console.log('\nCurrent filenames:');
   fs.readdir(assetsWay, { withFileTypes: true }, (err, files) => {
     if (err) console.log(err);
     else {
@@ -63,8 +60,6 @@ function copyFileFromFolder() {
             files.forEach((f) => {
               let fileIntoFolder = path.join(pathToFile, f.name);
               let fileCopyDist = path.join(pathToFileCopy, f.name);
-              // console.log(fileIntoFolder)
-              // console.log(fileCopyDist)
               fs.copyFile(fileIntoFolder, fileCopyDist, (err) => {
                 if (err) {
                   console.log('Error Found:', err);
@@ -81,7 +76,6 @@ copyFileFromFolder();
 
 // Create HTML
 const htmlComponents = path.join(__dirname, 'components');
-// console.log(htmlComponents)
 
 function templateHtml() {
   fs.readFile(
